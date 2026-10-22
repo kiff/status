@@ -1,0 +1,28 @@
+{
+  "services": [
+    {
+      "id": "api",
+      "name": "KIFF API",
+      "description": "Decides each call against its Card and records it.",
+      "check": { "url": "https://api.kiff.dev/healthz", "expect": 200 }
+    },
+    {
+      "id": "gateway",
+      "name": "KIFF gateway",
+      "description": "Through which agents call their tools.",
+      "check": { "url": "https://mcp.kiff.dev/healthz", "expect": 200 }
+    },
+    {
+      "id": "planque",
+      "name": "planque",
+      "description": "Keeps tools' sign-ins and sends the calls KIFF allows.",
+      "check": { "url": "https://planque.kiff.dev/healthz", "expect": 200 }
+    },
+    {
+      "id": "tafs",
+      "name": "tafs service",
+      "description": "What the tafs app and your tafs run on.",
+      "check": { "urlSecret": "TAFS_CHECK_URL", "path": "/v1/home", "expect": 401 }
+    }
+  ]
+}

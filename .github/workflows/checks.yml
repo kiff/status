@@ -1,0 +1,33 @@
+name: Checks
+# Every 5 minutes, from outside KIFF's hosting: each service's state, up,
+# degraded or down, committed only when one changes (which rebuilds the
+# page). GitHub may run a scheduled job a few minutes late.
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: checks
+  cancel-in-progress: false
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Check each service
+        env:
+          TAFS_CHECK_URL: ${{ secrets.TAFS_CHECK_URL }}
+        run: node scripts/check.mjs
+      - name: Commit a changed state
+        run: |
+          if git diff --quiet checks/status.json; then exit 0; fi
+          git config user.name "kiff-status"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "checks: $(node -e 'const s=require("./checks/status.json").services;console.log(Object.entries(s).map(([k,v])=>k+" "+v.state).join(", "))')" checks/status.json
+          git push
