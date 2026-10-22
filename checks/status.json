@@ -1,3 +1,20 @@
 {
-  "services": {}
+  "services": {
+    "api": {
+      "state": "up",
+      "since": "2026-10-22T19:53:18.343Z"
+    },
+    "gateway": {
+      "state": "up",
+      "since": "2026-10-22T19:53:18.343Z"
+    },
+    "planque": {
+      "state": "up",
+      "since": "2026-10-22T19:53:18.343Z"
+    },
+    "tafs": {
+      "state": "up",
+      "since": "2026-10-22T19:53:18.343Z"
+    }
+  }
 }
